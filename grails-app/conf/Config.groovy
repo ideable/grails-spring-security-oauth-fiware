@@ -19,13 +19,13 @@ environments {
   test {
     oauth {
       providers {
-        facebook {
-            api = org.scribe.builder.api.FacebookApi
-            key = 'oauth_facebook_key'
-            secret = 'oauth_facebook_secret'
-            successUri = '/oauth/facebook/success'
-            failureUri = '/oauth/facebook/failure'
-            callback = "/oauth/facebook/callback"
+        fiware {
+            api = grails.plugin.springsecurity.oauth.FiwareOAuthApi
+            key = 'oauth_fiware_key'
+            secret = 'oauth_fiware_secret'
+            successUri = '/oauth/fiware/success'
+            failureUri = '/oauth/fiware/failure'
+            callback = "/oauth/fiware/callback"
         }
       }
     }

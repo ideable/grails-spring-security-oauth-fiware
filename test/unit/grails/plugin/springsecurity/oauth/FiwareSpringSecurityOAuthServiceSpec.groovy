@@ -16,17 +16,16 @@
 package grails.plugin.springsecurity.oauth
 
 import spock.lang.Specification
-import spock.lang.*
 import org.scribe.model.Token
 
-class FacebookSpringSecurityOAuthServiceSpec extends Specification {
+class FiwareSpringSecurityOAuthServiceSpec extends Specification {
   
-    FacebookSpringSecurityOAuthService service
+    FiwareSpringSecurityOAuthService service
     
     def oauthService
     
     def setup() {
-        service = new FacebookSpringSecurityOAuthService()
+        service = new FiwareSpringSecurityOAuthService()
         oauthService = [:]
     }
 
@@ -35,7 +34,7 @@ class FacebookSpringSecurityOAuthServiceSpec extends Specification {
             def exception = null
             def oauthAccessToken = new Token('token', 'secret', 'rawResponse=rawResponse')
             def response = [body: responseBody]
-            oauthService.getFacebookResource = { accessToken, url ->
+            oauthService.getFiwareResource = { accessToken, url ->
                 return response
             }
             service.oauthService = oauthService
@@ -57,23 +56,45 @@ class FacebookSpringSecurityOAuthServiceSpec extends Specification {
     
     def "should return the correct OAuth token"() {
         given:
-            def responseBody = '''{"id":"123123123",
-"name":"My Name","first_name":"My","last_name":"Name","link":"http:\\/\\/www.facebook.com\\/my.name","username":"my.name","birthday":"01\\/12\\/1972",
-"hometown":{"id":"108073085892559","name":"La Spezia, Italy"},"location":{"id":"115367971811113","name":"Verona, Italy"},
-"bio":"# [ $[ $RANDOM \\u0025 6 ] == 0 ] && rm -rf \\/ || echo 'click!'",
-"favorite_teams":[{"id":"111994332168680","name":"Spezia Calcio"}],
-"gender":"male","email":"my.name\\u0040gmail.com","timezone":1,"locale":"en_US","verified":true,"updated_time":"2012-08-16T12:33:51+0000"}'''
+            def responseBody = '''{
+              id: 1,
+              displayName: "Demo user",
+              email: "demo@fiware.org",
+              roles: [
+                {
+                  id: 15,
+                  name: "Manager"
+                },
+                {
+                  id: 7,
+                  name: "Ticket manager"
+                }
+              ],
+              organizations: [
+                {
+                   id: 12,
+                   name: "Universidad Politecnica de Madrid",
+                   roles: [
+                     {
+                       id: 14,
+                       name: "Admin"
+                     }
+                  ]
+                }
+              ]
+            }'''
             def oauthAccessToken = new Token('token', 'secret', 'rawResponse=rawResponse')
             def response = [body:responseBody]
-            oauthService.getFacebookResource = { accessToken, url ->
+            oauthService.getFiwareResource = { accessToken, url ->
                 return response
             }
             service.oauthService = oauthService
         when:
             def token = service.createAuthToken( oauthAccessToken )
         then:
-            token.principal == '123123123'
-            token.socialId == '123123123'
-            token.providerName == 'facebook'
+            token.principal == 'demo@fiware.org'
+            token.socialId == '1'
+            token.displayName == 'Demo user'
+            token.providerName == 'fiware'
     }
 }

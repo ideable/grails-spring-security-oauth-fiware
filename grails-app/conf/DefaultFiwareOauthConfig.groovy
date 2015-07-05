@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors
+ * Copyright 2015 the original author or authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
 import grails.util.Holders
 
 /**
- * @author <a href='mailto:donbeave@gmail.com'>Alexey Zhokhov</a>
+ * @author <a href='mailto:gonzalo@ideable.net'>Gonzalo Pérez</a>
  */
 def appName = grails.util.Metadata.current.'app.name'
 def baseURL = Holders.config.grails.serverURL ?: "http://localhost:${System.getProperty('server.port', '8080')}/${appName}"
 
 oauth {
     providers {
-        facebook {
-            api = org.scribe.builder.api.FacebookApi
-            successUri = '/oauth/facebook/success'
-            failureUri = '/oauth/facebook/failure'
-            callback = "${baseURL}/oauth/facebook/callback"
+        fiware {
+            api = grails.plugin.springsecurity.oauth.FiwareOAuthApi
+            successUri = '/oauth/fiware/success'
+            failureUri = '/oauth/fiware/error'
+            callback = "${baseURL}/oauth/fiware/callback"
         }
     }
 }

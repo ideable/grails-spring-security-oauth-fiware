@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors
+ * Copyright 2015 the original author or authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,23 +18,26 @@ package grails.plugin.springsecurity.oauth
 import org.scribe.model.Token
 
 /**
- * Spring Security authentication token for Facebook users. It's a standard {@link OAuthToken}
- * that returns the Facebook name as the principal.
+ * Spring Security authentication token for Fiware users. It's a standard {@link OAuthToken}
+ * that returns the Fiware name as the principal.
  *
- * @author <a href='mailto:cazacugmihai@gmail.com'>Mihai Cazacu</a>
- * @author <a href='mailto:enrico@comiti.name'>Enrico Comiti</a>
- * @author Thierry Nicola
+ * @author <a href='mailto:gonzalo@ideable.net'>Gonzalo Pérez</a>
  */
-class FacebookOAuthToken extends OAuthToken {
+class FiwareOAuthToken extends OAuthToken {
 
-    public static final String PROVIDER_NAME = 'facebook'
+    public static final String PROVIDER_NAME = 'fiware'
 
     String profileId
+    String displayName
+    String email
 
-    FacebookOAuthToken(Token accessToken, String profileId) {
+
+    FiwareOAuthToken(Token accessToken, String profileId, String displayName, String email) {
         super(accessToken)
         this.profileId = profileId
-        this.principal = profileId
+        this.displayName = displayName
+        this.email = email
+        this.principal = email
     }
 
     String getSocialId() {
@@ -42,7 +45,7 @@ class FacebookOAuthToken extends OAuthToken {
     }
 
     String getScreenName() {
-        return profileId
+        return displayName
     }
 
     String getProviderName() {

@@ -1,7 +1,7 @@
-grails-spring-security-oauth-facebook [![Build Status](https://api.travis-ci.org/donbeave/grails-spring-security-oauth-facebook.png?branch=master)](https://travis-ci.org/donbeave/grails-spring-security-oauth-facebook)
+grails-spring-security-oauth-fiware
 ====================================
 
-Facebook extension for [Grails Spring Security OAuth][spring-security-oauth-plugin] plugin
+Fiware extension for [Grails Spring Security OAuth][spring-security-oauth-plugin] plugin
 
 Installation
 ------------
@@ -26,13 +26,13 @@ oauth {
   // ...
   providers {
     // ...
-    facebook {
-      api = org.scribe.builder.api.FacebookApi
-      key = 'oauth_facebook_key'
-      secret = 'oauth_facebook_secret'
-      successUri = '/oauth/facebook/success'
-      failureUri = '/oauth/facebook/error'
-      callback = "${baseURL}/oauth/facebook/callback"
+    fiware {
+      api = org.scribe.builder.api.FiwareApi
+      key = 'oauth_fiware_key'
+      secret = 'oauth_fiware_secret'
+      successUri = '/oauth/fiware/success'
+      failureUri = '/oauth/fiware/error'
+      callback = "${baseURL}/oauth/fiware/callback"
     }
     // ...
   }
@@ -41,17 +41,17 @@ oauth {
 
 In your view you can use the taglib exposed from this plugin and from OAuth plugin to create links and to know if the user is authenticated with a given provider:
 ```xml
-<oauth:connect provider="facebook" id="facebook-connect-link">Facebook</oauth:connect>
+<oauth:connect provider="fiware" id="fiware-connect-link">Fiware</oauth:connect>
 
-Logged with facebook?
-<s2o:ifLoggedInWith provider="facebook">yes</s2o:ifLoggedInWith>
-<s2o:ifNotLoggedInWith provider="facebook">no</s2o:ifNotLoggedInWith>
+Logged with fiware?
+<s2o:ifLoggedInWith provider="fiware">yes</s2o:ifLoggedInWith>
+<s2o:ifNotLoggedInWith provider="fiware">no</s2o:ifNotLoggedInWith>
 ```
 
 Copyright and license
 ---------------------
 
-Copyright 2012-2014 Mihai Cazacu, Enrico Comiti and Alexey Zhokhov under the [Apache License, Version 2.0](LICENSE). Supported by [Polusharie][polusharie].
+Copyright 2015 Ideable Solutions under the [Apache License, Version 2.0](LICENSE).
 
-[polusharie]: http://www.polusharie.com
+[ideable]: http://www.ideable.net
 [spring-security-oauth-plugin]: https://github.com/enr/grails-spring-security-oauth

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors
+ * Copyright 2015 the original author or authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,26 +19,31 @@ import grails.converters.JSON
 import org.scribe.model.Token
 
 /**
- * @author <a href='mailto:cazacugmihai@gmail.com'>Mihai Cazacu</a>
+ * @author <a href='mailto:gonzalo@ideable.net'>Gonzalo Pérez</a>
  */
-class FacebookSpringSecurityOAuthService {
+class FiwareSpringSecurityOAuthService {
 
     def oauthService
 
     def createAuthToken(Token accessToken) {
-        def response = oauthService.getFacebookResource(accessToken, 'https://graph.facebook.com/me')
+        def response = oauthService.getFiwareResource(accessToken, 'https://account.lab.fiware.org/user')
         def user
         try {
             user = JSON.parse(response.body)
         } catch (Exception e) {
-            log.error "Error parsing response from Facebook. Response:\n${response.body}"
-            throw new OAuthLoginException("Error parsing response from Facebook", e)
+            log.error "Error parsing response from Fiware. Response:\n${response.body}"
+            throw new OAuthLoginException("Error parsing response from Fiware", e)
         }
         if (!user?.id) {
-            log.error "No user id from Facebook. Response:\n${response.body}"
-            throw new OAuthLoginException("No user id from Facebook")
+            log.error "No user id from Fiware. Response:\n${response.body}"
+            throw new OAuthLoginException("No user id from Fiware")
         }
-        return new FacebookOAuthToken(accessToken, user.id)
+
+        String profileId = "${user.id}"
+        String displayName = "${user.displayName}"
+        String email = "${user.email}"
+
+        return new FiwareOAuthToken(accessToken, profileId, displayName, email)
     }
 
 }
